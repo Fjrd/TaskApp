@@ -1,9 +1,9 @@
 package com.example.taskapp.repositories;
 
 import com.example.taskapp.model.User;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public class UserRepository implements Repository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 }
