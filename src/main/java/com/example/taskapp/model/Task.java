@@ -25,6 +25,6 @@ public class Task {
 
     @NonNull
     @ManyToOne
-    User author;
+    Account author;
 
 }

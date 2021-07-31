@@ -1,7 +1,7 @@
 package com.example.taskapp.model;
 
 public enum UserRole {
-    BASIC,
-    OPERATOR,
-    ADMIN
+    ROLE_USER,
+    ROLE_OPERATOR,
+    ROLE_ADMIN
 }

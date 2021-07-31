@@ -1,7 +1,9 @@
-package com.example.taskapp.controllers;
+package com.example.taskapp.controller;
 
+import com.example.taskapp.TaskNotFoundException;
 import com.example.taskapp.model.Task;
-import com.example.taskapp.repositories.TaskRepository;
+import com.example.taskapp.repository.TaskRepository;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class TaskController {
         this.taskRepository = taskRepository;
     }
 
+    @Secured("ROLE_OPERATOR")
     @GetMapping
     List<Task> all(){
         return taskRepository.findAll();

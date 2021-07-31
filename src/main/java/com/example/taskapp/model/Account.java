@@ -10,8 +10,9 @@ import java.util.UUID;
 @Entity
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User {
+public class Account {
 
     @Id
     @GeneratedValue
@@ -22,7 +23,15 @@ public class User {
     String name;
 
     @NonNull
+    String password;
+
+    /*
+    @NonNull
     @ElementCollection
+    Set<UserRole> roles;
+    */
+    @NonNull
+    @ElementCollection(fetch = FetchType.EAGER)
     Set<UserRole> roles;
 
     @OneToMany

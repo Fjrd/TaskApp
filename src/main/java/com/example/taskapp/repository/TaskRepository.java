@@ -1,4 +1,4 @@
-package com.example.taskapp.repositories;
+package com.example.taskapp.repository;
 
 
 import com.example.taskapp.model.Task;

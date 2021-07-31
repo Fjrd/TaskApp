@@ -1,4 +1,4 @@
-package com.example.taskapp.controllers;
+package com.example.taskapp;
 
 import java.util.UUID;
 
