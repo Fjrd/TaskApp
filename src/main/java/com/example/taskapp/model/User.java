@@ -1,21 +1,27 @@
 package com.example.taskapp.model;
 
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Entity
+@Setter(AccessLevel.PRIVATE)
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
 
     @Id
+    @GeneratedValue
+    @EqualsAndHashCode.Include
     UUID id;
 
+    @NonNull
+    String name;
+
+    @NonNull
     @ElementCollection
     Set<UserRole> roles;
 
