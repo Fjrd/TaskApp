@@ -1,4 +1,4 @@
-package com.example.taskapp.repository;
+package com.example.taskapp.repositories;
 
 import com.example.taskapp.model.Task;
 import org.springframework.data.repository.Repository;
