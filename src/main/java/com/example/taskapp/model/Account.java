@@ -1,5 +1,6 @@
 package com.example.taskapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.validation.annotation.Validated;
@@ -35,8 +36,9 @@ public class Account {
   @ElementCollection(fetch = FetchType.EAGER)
   Set<UserRole> roles;
 
-  @OneToMany()
   @ToString.Exclude
+  @OneToMany(mappedBy = "author")
+  @JsonBackReference
   Set<Task> tasks;
 
   @Override

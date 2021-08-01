@@ -1,5 +1,6 @@
 package com.example.taskapp.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import org.hibernate.Hibernate;
@@ -34,8 +35,10 @@ public class Task {
   String text;
 
   @NonNull
+  @ToString.Exclude
   @ManyToOne
-  @JoinColumn(name = "author_id", insertable = false, updatable = false)
+  @JoinColumn(name = "author_id")
+  @JsonManagedReference
   Account author;
 
   @Override
