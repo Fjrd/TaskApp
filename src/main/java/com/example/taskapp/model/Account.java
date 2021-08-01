@@ -9,33 +9,33 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+@Entity
 @Getter
 @ToString
-@Entity
 @Setter(AccessLevel.PRIVATE)
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Validated
-@Builder(toBuilder = true)
 public class Account {
 
-    @Id
-    @GeneratedValue
-    @EqualsAndHashCode.Include
-    UUID id;
+  @Id
+  @GeneratedValue
+  @EqualsAndHashCode.Include
+  UUID id;
 
-    @NonNull
-    String name;
+  @NonNull
+  String name;
 
-    @NonNull
-    String password;
+  @NonNull
+  String password;
 
   @NonNull
   @ElementCollection(fetch = FetchType.EAGER)
   Set<UserRole> roles;
 
-  @OneToMany
-  @JoinColumn(name = "id")
+  @OneToMany()
   @ToString.Exclude
   Set<Task> tasks;
 

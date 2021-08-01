@@ -32,21 +32,18 @@ public class TaskController {
       return taskService.create(task);
   }
 
-  //TODO OPERATOR
-  @Secured("ROLE_USER")
+  @Secured({"ROLE_USER", "ROLE_OPERATOR"})
   @GetMapping("{id}")
-  Task one(@PathVariable UUID id) {
-    return taskService.findById(id);
+  Task one(@PathVariable UUID id, @AuthenticationPrincipal User user) {
+    return taskService.findById(id, user);
   }
 
-  //TODO PATCH
   @Secured("ROLE_USER")
   @PutMapping
   Task editTask(@RequestBody @Valid Task task) {
     return taskService.edit(task);
   }
 
-  //TODO PATCH
   @Secured("ROLE_USER")
   @PutMapping("{id}/send")
   Task sendTask(@PathVariable String id) {
@@ -59,14 +56,12 @@ public class TaskController {
     return taskService.findAllByStatus(SENT);
   }
 
-  //TODO PATCH
   @Secured("ROLE_OPERATOR")
   @PutMapping("{id}/accept")
   Task acceptTack(@PathVariable String id) {
     return taskService.acceptTack(id);
   }
 
-  //TODO PATCH
   @Secured("ROLE_OPERATOR")
   @PutMapping("{id}/reject")
   Task rejectTask(@PathVariable String id) {
@@ -74,8 +69,6 @@ public class TaskController {
   }
 
 
-
-
-  //TODO operator can accept and reject tasks (change status)
+  //TODO PATCH
 
 }

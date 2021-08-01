@@ -3,37 +3,39 @@ package com.example.taskapp.model;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import org.hibernate.Hibernate;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
 @Getter
 @ToString
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity
 @Setter(AccessLevel.PRIVATE)
-@NoArgsConstructor
 @Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Validated
 @Jacksonized
 public class Task {
 
-    @Id
-    @GeneratedValue
-    @EqualsAndHashCode.Include
-    UUID id;
-
-    @NonNull
-    TaskStatus status;
+  @Id
+  @GeneratedValue
+  @EqualsAndHashCode.Include
+  UUID id;
 
   @NonNull
-  @Max(value = 255)
+  TaskStatus status;
+
+  @NonNull
+  //@Max(value = 255)
   String text;
 
-  @JoinColumn(unique = true)
   @NonNull
   @ManyToOne
+  @JoinColumn(name = "author_id", insertable = false, updatable = false)
   Account author;
 
   @Override
