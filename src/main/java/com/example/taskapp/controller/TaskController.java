@@ -51,7 +51,7 @@ public class TaskController {
   }
 
   @Secured("ROLE_OPERATOR")
-  @GetMapping("sent-tasks")
+  @GetMapping("sent")
   List<Task> allSentTask() {
     return taskService.findAllByStatus(SENT);
   }
@@ -69,6 +69,6 @@ public class TaskController {
   }
 
 
-  //TODO PATCH
+  //TODO PATCH requests
 
 }

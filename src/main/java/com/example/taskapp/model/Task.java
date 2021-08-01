@@ -2,7 +2,6 @@ package com.example.taskapp.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import lombok.extern.jackson.Jacksonized;
 import org.hibernate.Hibernate;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,9 +16,7 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Validated
-@Jacksonized
 public class Task {
 
   @Id
@@ -28,6 +25,7 @@ public class Task {
   UUID id;
 
   @NonNull
+  @Enumerated(EnumType.STRING)
   TaskStatus status;
 
   @NonNull

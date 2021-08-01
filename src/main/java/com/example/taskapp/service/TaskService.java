@@ -55,7 +55,6 @@ public class TaskService {
   }
 
 
-  //TODO duplicate code
   public Task sendTask(String id) {
     return taskDao.save(taskDao.findById(UUID.fromString(id))
         .toBuilder()

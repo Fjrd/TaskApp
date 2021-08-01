@@ -16,7 +16,6 @@ import java.util.UUID;
 @Setter(AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Validated
 public class Account {
@@ -34,6 +33,7 @@ public class Account {
 
   @NonNull
   @ElementCollection(fetch = FetchType.EAGER)
+  @Enumerated(value = EnumType.STRING)
   Set<UserRole> roles;
 
   @ToString.Exclude
