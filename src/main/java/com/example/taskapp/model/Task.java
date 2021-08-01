@@ -9,6 +9,7 @@ import java.util.UUID;
 @Entity
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Task {
 

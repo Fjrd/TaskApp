@@ -25,16 +25,12 @@ public class Account {
     @NonNull
     String password;
 
-    /*
-    @NonNull
-    @ElementCollection
-    Set<UserRole> roles;
-    */
     @NonNull
     @ElementCollection(fetch = FetchType.EAGER)
     Set<UserRole> roles;
 
     @OneToMany
+    @JoinColumn(name = "task_id")
     Set<Task> tasks;
 
 }

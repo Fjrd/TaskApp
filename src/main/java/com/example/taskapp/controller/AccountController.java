@@ -34,6 +34,8 @@ public class AccountController {
           .orElseThrow(() -> new AccountNotFoundException(id));
     }
 
+
+    //TODO admin can change users role
 /*
     @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}")
