@@ -1,59 +1,81 @@
 package com.example.taskapp.controller;
 
-import com.example.taskapp.TaskNotFoundException;
 import com.example.taskapp.model.Task;
-import com.example.taskapp.model.TaskStatus;
-import com.example.taskapp.repository.TaskRepository;
-import com.example.taskapp.service.UserDetailServiceImpl;
+import com.example.taskapp.service.TaskService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.taskapp.model.TaskStatus.SENT;
+
 @RestController
 @RequestMapping("api/tasks")
+@RequiredArgsConstructor
 public class TaskController {
-    private final TaskRepository taskRepository;
-    private final UserDetailServiceImpl userDetailService;
+  TaskService taskService;
 
-    public TaskController(TaskRepository taskRepository, UserDetailServiceImpl userDetailService) {
-      this.taskRepository = taskRepository;
-      this.userDetailService = userDetailService;
-    }
+  @Secured("ROLE_USER")
+  @GetMapping("my-tasks")
+  public List<Task> allTasksCreatedByUser(@AuthenticationPrincipal User user) {
+    return taskService.findAllByAuthor(user);
+  }
 
-    @Secured("ROLE_USER")
-    //TODO make correct path
-    @GetMapping("me")
-    List<Task> allTasksCreatedByUser(@AuthenticationPrincipal User user){
-        return taskRepository.findAllByAuthor(userDetailService.loadCurrentLoggedAccountByName(user.getUsername()));
-    }
+  @Secured("ROLE_USER")
+  @PostMapping
+  public Task newTask(@RequestBody @Valid Task task){
+      return taskService.create(task);
+  }
 
-    //TODO does in work? how to postman
-    @Secured("ROLE_USER")
-    @PostMapping
-    Task newTask(@RequestBody Task newTask){
-        return taskRepository.save(newTask);
-    }
+  //TODO OPERATOR
+  @Secured("ROLE_USER")
+  @GetMapping("{id}")
+  Task one(@PathVariable UUID id) {
+    return taskService.findById(id);
+  }
 
-    @Secured("ROLE_USER")
-    @GetMapping("/{id}")
-    Task one(@PathVariable UUID id){
-        return taskRepository.findById(id)
-                .orElseThrow(()-> new TaskNotFoundException(id));
-    }
+  //TODO PATCH
+  @Secured("ROLE_USER")
+  @PutMapping
+  Task editTask(@RequestBody @Valid Task task) {
+    return taskService.edit(task);
+  }
 
-    @Secured("ROLE_OPERATOR")
-    @GetMapping("sent")
-    List<Task> allSentTask(){
-      return taskRepository.findAllByStatus(TaskStatus.SENT);
-    }
+  //TODO PATCH
+  @Secured("ROLE_USER")
+  @PutMapping("{id}/send")
+  Task sendTask(@PathVariable String id) {
+    return taskService.sendTask(id);
+  }
+
+  @Secured("ROLE_OPERATOR")
+  @GetMapping("sent-tasks")
+  List<Task> allSentTask() {
+    return taskService.findAllByStatus(SENT);
+  }
+
+  //TODO PATCH
+  @Secured("ROLE_OPERATOR")
+  @PutMapping("{id}/accept")
+  Task acceptTack(@PathVariable String id) {
+    return taskService.acceptTack(id);
+  }
+
+  //TODO PATCH
+  @Secured("ROLE_OPERATOR")
+  @PutMapping("{id}/reject")
+  Task rejectTask(@PathVariable String id) {
+    return taskService.rejectTask(id);
+  }
 
 
-    //TODO user can edit task in DRAFT status
-    //TODO user can send task to operator
-    //TODO operator can accept and reject tasks (change status)
+
+
+  //TODO operator can accept and reject tasks (change status)
 
 }

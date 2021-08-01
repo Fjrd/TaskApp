@@ -24,16 +24,17 @@ public class AccountLoader implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
 
-    //TODO mode account and task init to tests?
+    //TODO move account and task init to tests?
     Account account1 = new Account("name", "pass", new HashSet<>(Arrays.asList(ROLE_USER, ROLE_OPERATOR, ROLE_ADMIN)));
     Account account2 = new Account("name2", "pass2", new HashSet<>(Arrays.asList(ROLE_USER, ROLE_OPERATOR, ROLE_ADMIN)));
     accountRepository.save(account1);
     accountRepository.save(account2);
-    taskRepository.save(new Task(TaskStatus.DRAFT, "text", account1));
-    taskRepository.save(new Task(TaskStatus.DRAFT, "text1", account2));
-    taskRepository.save(new Task(TaskStatus.SENT, "text2", account1));
-    taskRepository.save(new Task(TaskStatus.SENT, "text3", account2));
-    taskRepository.save(new Task(TaskStatus.ACCEPTED, "text4", account1));
-    taskRepository.save(new Task(TaskStatus.REJECTED, "text5", account2));
+    taskRepository.save(Task.builder().status(TaskStatus.DRAFT).text("12312").author(account1).build());
+    taskRepository.save(Task.builder().status(TaskStatus.REJECTED).text("12311232").author(account2).build());
+    taskRepository.save(Task.builder().status(TaskStatus.ACCEPTED).text("1231232112").author(account1).build());
+    taskRepository.save(Task.builder().status(TaskStatus.DRAFT).text("1231asdas2").author(account2).build());
+    taskRepository.save(Task.builder().status(TaskStatus.SENT).text("1231gfdf2").author(account1).build());
+    taskRepository.save(Task.builder().status(TaskStatus.SENT).text("1231gfdfgdf2").author(account2).build());
+
   }
 }
