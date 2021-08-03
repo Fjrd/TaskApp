@@ -21,6 +21,14 @@ public class TaskAppApplication extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+    httpSecurity.authorizeRequests().antMatchers(
+        "/v2/api-docs",
+        "/configuration/ui",
+        "/swagger-resources/**",
+        "/configuration/security",
+        "/swagger-ui.html",
+        "/webjars/**")
+        .permitAll();
     httpSecurity.headers().frameOptions().sameOrigin();
     httpSecurity.csrf().disable();
     httpSecurity.authorizeRequests().anyRequest().authenticated();
