@@ -1,0 +1,26 @@
+[
+  {
+    "id": "21293107-394c-452e-8a9e-9f2e6d5bc0be",
+    "name": "user",
+    "password": "pass1",
+    "roles": [
+      "ROLE_USER"
+    ]
+  },
+  {
+    "id": "a298f5c3-f2c0-4fa0-a511-5951f5adfde5",
+    "name": "operator",
+    "password": "pass2",
+    "roles": [
+      "ROLE_OPERATOR"
+    ]
+  },
+  {
+    "id": "bed60ee5-4518-43ea-855e-6318c5654743",
+    "name": "admin",
+    "password": "pass3",
+    "roles": [
+      "ROLE_ADMIN"
+    ]
+  }
+]

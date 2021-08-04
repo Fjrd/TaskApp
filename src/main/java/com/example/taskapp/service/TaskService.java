@@ -1,8 +1,9 @@
 package com.example.taskapp.service;
 
-import com.example.taskapp.dao.TaskDao;
+import com.example.taskapp.AccountNotFoundException;
 import com.example.taskapp.model.Task;
 import com.example.taskapp.model.TaskStatus;
+import com.example.taskapp.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -17,60 +18,68 @@ import static com.example.taskapp.model.UserRole.ROLE_OPERATOR;
 @RequiredArgsConstructor
 public class TaskService {
 
-  TaskDao taskDao;
+  TaskRepository taskRepository;
   UserDetailServiceImpl userDetailService;
   MessageConverter messageConverter;
 
   public List<Task> findAllByAuthor(User user) {
     //TODO DTO
-    return taskDao.findAllByAuthor(userDetailService.loadCurrentLoggedAccountByName(user.getUsername()));
+    return taskRepository.findAllByAuthor(userDetailService.loadCurrentLoggedAccountByName(user.getUsername()));
   }
 
   public Task create(Task task) {
     if (task.getStatus() == DRAFT || task.getStatus() == SENT)
-      taskDao.save(task);
+      taskRepository.save(task);
     return task;
-    //TODO throw exception wrong status
+    //TODO wrong status
   }
 
   public Task findById(UUID id, User user) {
-    Task task = taskDao.findById(id);
+    Task task = taskRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
     if (user.getAuthorities().contains(ROLE_OPERATOR)){
       String newMessage = messageConverter.convert(task.getText(), "", "-");
       return Task.builder().text(newMessage).build();
     }
     return task;
-
   }
 
   public Task edit(Task task) {
     if (task.getStatus() == DRAFT)
-      taskDao.save(task);
-    return taskDao.findById(task.getId());
-    //TODO throw exception wrong status
+      taskRepository.save(task);
+    return taskRepository.findById(task.getId()).orElseThrow(() -> new AccountNotFoundException(task.getId()));
+    //TODO wrong status
   }
 
   public List<Task> findAllByStatus(TaskStatus status) {
-    return taskDao.findAllByStatus(status);
+    return taskRepository.findAllByStatus(status);
   }
 
 
   public Task sendTask(String id) {
-    return taskDao.save(taskDao.findById(UUID.fromString(id))
+    UUID uuid = UUID.fromString(id);
+
+    Task task = taskRepository.findById(uuid).orElseThrow(() -> new AccountNotFoundException(uuid));
+    return taskRepository.save(task
         .toBuilder()
         .status(SENT)
         .build());
   }
 
   public Task acceptTack(String id) {
-    return taskDao.save(taskDao.findById(UUID.fromString(id))
+    UUID uuid = UUID.fromString(id);
+
+    Task task = taskRepository.findById(uuid).orElseThrow(() -> new AccountNotFoundException(uuid));
+    return taskRepository.save(task
         .toBuilder()
         .status(ACCEPTED)
         .build());
   }
 
   public Task rejectTask(String id) {
-    return taskDao.save(taskDao.findById(UUID.fromString(id))
+    UUID uuid = UUID.fromString(id);
+
+    Task task = taskRepository.findById(uuid).orElseThrow(() -> new AccountNotFoundException(uuid));
+    return taskRepository.save(task
         .toBuilder()
         .status(REJECTED)
         .build());

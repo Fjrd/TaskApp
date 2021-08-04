@@ -1,36 +1,42 @@
 package com.example.taskapp.service;
 
-import com.example.taskapp.dao.AccountDao;
+import com.example.taskapp.AccountNotFoundException;
 import com.example.taskapp.model.Account;
 import com.example.taskapp.model.UserRole;
+import com.example.taskapp.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
-  AccountDao accountDao;
+  AccountRepository accountRepository;
 
   public List<Account> findAll() {
-    return accountDao.findAll();
+    return accountRepository.findAll();
   }
 
   public Account findById(String id) {
-    return accountDao.findById(id);
+    UUID uuid = UUID.fromString(id);
+    return accountRepository
+        .findById(uuid)
+        .orElseThrow(() -> new AccountNotFoundException(uuid));
   }
 
   public Account grantRoleOperator(String id) {
-    Account oldAccount = accountDao.findById(id);
+    UUID uuid = UUID.fromString(id);
+    Account oldAccount = accountRepository.findById(uuid).orElseThrow(() -> new AccountNotFoundException(uuid));
     Set<UserRole> roles = oldAccount.getRoles();
     roles.add(UserRole.ROLE_OPERATOR);
     Account newAccount = oldAccount
         .toBuilder()
         .roles(roles)
         .build();
-    accountDao.save(newAccount);
+    accountRepository.save(newAccount);
     return newAccount;
   }
 }
