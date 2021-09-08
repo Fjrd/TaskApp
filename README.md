@@ -4,7 +4,7 @@ Spring Security
 Spring WebMvc  
 Spring Data JPA with Hibernate  
 
-database script -> src/main/resources/static/schema.sql
+database script -> src/main/resources/static/DB_Schema.sql
 
 TODO - Tests, PATCH instead PUT, DTO
 
