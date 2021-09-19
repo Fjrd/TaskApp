@@ -15,7 +15,7 @@
   <description>Demo project for Spring Boot</description>
   <properties>
     <vavr.version>0.10.4</vavr.version>
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <springdoc-openapi.version>1.5.10</springdoc-openapi.version>
   </properties>
   <dependencies>
