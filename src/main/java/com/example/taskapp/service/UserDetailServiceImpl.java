@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
 
-  private final AccountRepository repository;
+  AccountRepository repository;
 
   @Override
   public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
@@ -37,6 +37,4 @@ public class UserDetailServiceImpl implements UserDetailsService {
     return repository.findByName(name)
         .orElseThrow(() -> new UsernameNotFoundException(name));
   }
-
-
 }
