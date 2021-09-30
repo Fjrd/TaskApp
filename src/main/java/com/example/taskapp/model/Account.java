@@ -21,19 +21,20 @@ import java.util.UUID;
 public class Account {
 
   @Id
-  @GeneratedValue
   @EqualsAndHashCode.Include
+  @GeneratedValue (strategy = GenerationType.AUTO)
+  @Column(name = "ID")
   UUID id;
 
-  @NonNull
+  @Column(name = "NAME", nullable = false)
   String name;
 
-  @NonNull
+  @Column(name = "PASSWORD", nullable = false)
   String password;
 
-  @NonNull
-  @ElementCollection(fetch = FetchType.EAGER)
-  @Enumerated(value = EnumType.STRING)
+  @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+  //@CollectionTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"))
+  @Enumerated(EnumType.STRING)
   Set<UserRole> roles;
 
   @ToString.Exclude

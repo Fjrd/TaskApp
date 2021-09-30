@@ -31,9 +31,10 @@ class AccountRepositoryTest {
         .isNotEmpty()
         .get()
         .matches(account -> account.getName().equals("user"))
-        .matches(account -> account.getPassword().equals("pass1"));
+        .matches(account -> account.getPassword().equals("user"));
 
-    assertThat(user.get().getRoles()).isNotNull()
+    assertThat(user.get().getRoles())
+        .isNotNull()
         .hasSize(1)
         .containsExactly(UserRole.valueOf("ROLE_USER"));
   }

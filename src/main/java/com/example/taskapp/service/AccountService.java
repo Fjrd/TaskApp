@@ -6,6 +6,7 @@ import com.example.taskapp.model.UserRole;
 import com.example.taskapp.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -14,12 +15,15 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AccountService {
+
   AccountRepository accountRepository;
 
+  @Transactional
   public List<Account> findAll() {
     return accountRepository.findAll();
   }
 
+  @Transactional
   public Account findById(String id) {
     UUID uuid = UUID.fromString(id);
     return accountRepository
@@ -27,6 +31,7 @@ public class AccountService {
         .orElseThrow(() -> new AccountNotFoundException(uuid));
   }
 
+  @Transactional
   public Account grantRoleOperator(String id) {
     UUID uuid = UUID.fromString(id);
     Account oldAccount = accountRepository.findById(uuid).orElseThrow(() -> new AccountNotFoundException(uuid));

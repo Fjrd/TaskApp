@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import static com.example.taskapp.model.UserRole.*;
 
@@ -49,19 +50,21 @@ public class SetupDataLoader  implements ApplicationListener<ContextRefreshedEve
         .roles(new HashSet<>(Arrays.asList(ROLE_ADMIN)))
         .build();
 
-    accountRepository.save(userAcc);
-    accountRepository.save(operatorAcc);
-    accountRepository.save(adminAcc);
+    List.of(
+        userAcc,
+        operatorAcc,
+        adminAcc)
+          .forEach(accountRepository::save);
 
 
-    taskRepository.save(Task.builder().status(TaskStatus.DRAFT).text("asdf").author(userAcc).build());
-    taskRepository.save(Task.builder().status(TaskStatus.SENT).text("erger").author(userAcc).build());
-
-    taskRepository.save(Task.builder().status(TaskStatus.DRAFT).text("sdgs").author(operatorAcc).build());
-    taskRepository.save(Task.builder().status(TaskStatus.SENT).text("1231asdas2").author(operatorAcc).build());
-    taskRepository.save(Task.builder().status(TaskStatus.ACCEPTED).text("1231gfdf2").author(operatorAcc).build());
-
-    taskRepository.save(Task.builder().status(TaskStatus.REJECTED).text("1231gfdfgdf2").author(adminAcc).build());
+    List.of(
+      Task.builder().status(TaskStatus.DRAFT).text("asdf").author(userAcc).build(),
+      Task.builder().status(TaskStatus.SENT).text("erger").author(userAcc).build(),
+      Task.builder().status(TaskStatus.DRAFT).text("sdgs").author(operatorAcc).build(),
+      Task.builder().status(TaskStatus.SENT).text("1231asdas2").author(operatorAcc).build(),
+      Task.builder().status(TaskStatus.ACCEPTED).text("1231gfdf2").author(operatorAcc).build(),
+      Task.builder().status(TaskStatus.REJECTED).text("1231gfdfgdf2").author(adminAcc).build())
+        .forEach(taskRepository::save);
 
     alreadySetup = true;
   }

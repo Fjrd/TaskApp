@@ -7,6 +7,7 @@ import com.example.taskapp.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,11 +23,13 @@ public class TaskService {
   UserDetailServiceImpl userDetailService;
   MessageConverter messageConverter;
 
+  @Transactional
   public List<Task> findAllByAuthor(User user) {
     //TODO DTO
     return taskRepository.findAllByAuthor(userDetailService.loadCurrentLoggedAccountByName(user.getUsername()));
   }
 
+  @Transactional
   public Task create(Task task) {
     if (task.getStatus() == DRAFT || task.getStatus() == SENT)
       taskRepository.save(task);
@@ -34,6 +37,7 @@ public class TaskService {
     //TODO wrong status
   }
 
+  @Transactional
   public Task findById(UUID id, User user) {
     Task task = taskRepository.findById(id).orElseThrow(() -> new AccountNotFoundException(id));
     if (user.getAuthorities().contains(ROLE_OPERATOR)){
@@ -43,6 +47,7 @@ public class TaskService {
     return task;
   }
 
+  @Transactional
   public Task edit(Task task) {
     if (task.getStatus() == DRAFT)
       taskRepository.save(task);
@@ -50,11 +55,13 @@ public class TaskService {
     //TODO wrong status
   }
 
+  @Transactional
   public List<Task> findAllByStatus(TaskStatus status) {
     return taskRepository.findAllByStatus(status);
   }
 
 
+  @Transactional
   public Task sendTask(String id) {
     UUID uuid = UUID.fromString(id);
 
@@ -65,6 +72,7 @@ public class TaskService {
         .build());
   }
 
+  @Transactional
   public Task acceptTack(String id) {
     UUID uuid = UUID.fromString(id);
 
@@ -75,6 +83,7 @@ public class TaskService {
         .build());
   }
 
+  @Transactional
   public Task rejectTask(String id) {
     UUID uuid = UUID.fromString(id);
 
